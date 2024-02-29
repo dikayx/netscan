@@ -5,6 +5,15 @@ namespace NScan.Core
 {
     public class PortScanner : IPortScanner
     {
+        private int _portsScanned;
+
+        public PortScanner()
+        {
+            _portsScanned = 0;
+        }
+
+        public int PortsScanned => _portsScanned;
+
         // Single-threaded scan method
         public List<int> Scan(IPAddress ipAddress, int timeoutMilliseconds, int startPort, int endPort, ref int openPorts, List<int> openPortList)
         {
@@ -16,14 +25,16 @@ namespace NScan.Core
                     IAsyncResult result = client.BeginConnect(ipAddress, port, null, null);
                     WaitHandle timeoutHandler = result.AsyncWaitHandle;
 
+                    Interlocked.Increment(ref _portsScanned);
+
                     if (!timeoutHandler.WaitOne(timeoutMilliseconds, false))
                     {
-                        WriteLine($"Port {port} is closed");
+                        //WriteLine($"Port {port} is closed");
                     }
                     else
                     {
                         client.EndConnect(result);
-                        PrintError($"Port {port} is open");
+                        //PrintError($"Port {port} is open");
                         Interlocked.Increment(ref openPorts);
                         lock (openPortList)
                         {
@@ -50,9 +61,11 @@ namespace NScan.Core
 
                 await Task.WhenAny(connectTask, Task.Delay(timeoutMilliseconds));
 
+                Interlocked.Increment(ref _portsScanned);
+
                 if (connectTask.IsCompletedSuccessfully && client.Connected)
                 {
-                    PrintError($"Port {port} is open");
+                    //PrintError($"Port {port} is open");
                     openPorts++; // Increment open port count
                     lock (openPortList)
                     {
@@ -61,7 +74,7 @@ namespace NScan.Core
                 }
                 else
                 {
-                    WriteLine($"Port {port} is closed");
+                    //WriteLine($"Port {port} is closed");
                 }
             }
             catch (Exception ex)

@@ -15,6 +15,7 @@ string banner = @"
  | . ` |/ _ \ __|\___ \ / __/ _` | '_ \| |    | |      | |  
  | |\  |  __/ |_ ____) | (_| (_| | | | | |____| |____ _| |_ 
  |_| \_|\___|\__|_____/ \___\__,_|_| |_|\_____|______|_____|
+ 
  " + note + @"
 ------------------------------------------------------------";
 
@@ -22,8 +23,8 @@ WriteLine(banner);
 WriteLine("Please select a scan method:");
 
 string[] options = [
-    "Multi-threaded scan (much faster, recommended)",
-    "Single-threaded scan (slow, but more readable)",
+    "Multi-threaded scan (fast, recommended)",
+    "Single-threaded scan (slow, needs less resources)",
     "Custom scan (not yet implemented)",
     "Exit"
     ];
@@ -134,7 +135,9 @@ static void PrintOpenPorts(List<int> openPortList)
 {
     foreach (var port in openPortList)
     {
+        ForegroundColor = ConsoleColor.Red;
         WriteLine(port);
+        ResetColor();
     }
 }
 

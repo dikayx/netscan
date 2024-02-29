@@ -10,6 +10,7 @@ namespace NScan.Core
         private int _timeoutMilliseconds;
         private int _openPorts;
         private List<int> _openPortList;
+        private PortScanner portScanner;
 
         public ScanService(IPAddress ipAddress, int startPort, int endPort, int timeoutMilliseconds)
         {
@@ -19,11 +20,17 @@ namespace NScan.Core
             _timeoutMilliseconds = timeoutMilliseconds;
             _openPorts = 0;
             _openPortList = [];
+            portScanner = new PortScanner();
+        }
+
+        public int GetPortsScanned()
+        {
+            return portScanner.PortsScanned;
         }
 
         public async Task<List<int>> ScanPorts(ScanMethod scanMethod)
         {
-            PortScanner portScanner = new PortScanner();
+            //PortScanner portScanner = new PortScanner();
 
             switch (scanMethod)
             {
@@ -96,7 +103,7 @@ namespace NScan.Core
                 threadCount = 64;
             }
 
-            WriteLine($"Using {threadCount} threads");
+            //WriteLine($"Using {threadCount} threads");
 
             return threadCount;
         }
