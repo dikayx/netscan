@@ -19,8 +19,8 @@ string banner = @"
  " + note + @"
 ------------------------------------------------------------";
 
-WriteLine(banner);
-WriteLine("Please select a scan method:");
+// WriteLine(banner);
+// WriteLine("Please select a scan method:");
 
 string[] options = [
     "Multi-threaded scan (fast, recommended)",
@@ -28,7 +28,7 @@ string[] options = [
     "Custom scan (not yet implemented)",
     "Exit"
     ];
-SelectionMenu menu = new(options);
+SelectionMenu2 menu = new(banner, options);
 int selectedIndex = menu.ShowMenu();
 
 // Options
