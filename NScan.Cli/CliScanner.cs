@@ -1,23 +1,14 @@
 ﻿using NScan.Core;
 using System.Net;
-using NScan.Cli.Rendering;
 
 namespace NScan.Cli;
 
-public class CliScanner
+public class CliScanner(string target, int startPort, int endPort, int timeoutMilliseconds)
 {
-    private string _target;
-    private int _startPort;
-    private int _endPort;
-    private int _timeoutMilliseconds;
-
-    public CliScanner(string target, int startPort, int endPort, int timeoutMilliseconds)
-    {
-        _target = target;
-        _startPort = startPort;
-        _endPort = endPort;
-        _timeoutMilliseconds = timeoutMilliseconds;
-    }
+    private readonly string _target = target;
+    private readonly int _startPort = startPort;
+    private readonly int _endPort = endPort;
+    private readonly int _timeoutMilliseconds = timeoutMilliseconds;
 
     public async Task<List<int>> PerformScan(ScanMethod scanMethod)
     {

@@ -1,17 +1,10 @@
 ﻿namespace NScan.Core;
 
-public class ProgressService
+public class ProgressService(ScanService scanService, int startPort, int endPort)
 {
-    private ScanService _scanService;
-    private int _startPort;
-    private int _endPort;
-
-    public ProgressService(ScanService scanService, int startPort, int endPort)
-    {
-        _scanService = scanService;
-        _startPort = startPort;
-        _endPort = endPort;
-    }
+    private readonly ScanService _scanService = scanService;
+    private readonly int _startPort = startPort;
+    private readonly int _endPort = endPort;
 
     public float GetProgress()
     {

@@ -27,14 +27,9 @@ namespace NScan.Core
 
                     Interlocked.Increment(ref _portsScanned);
 
-                    if (!timeoutHandler.WaitOne(timeoutMilliseconds, false))
-                    {
-                        //WriteLine($"Port {port} is closed");
-                    }
-                    else
+                    if (timeoutHandler.WaitOne(timeoutMilliseconds, false))
                     {
                         client.EndConnect(result);
-                        //PrintError($"Port {port} is open");
                         Interlocked.Increment(ref openPorts);
                         lock (openPortList)
                         {
@@ -65,16 +60,11 @@ namespace NScan.Core
 
                 if (connectTask.IsCompletedSuccessfully && client.Connected)
                 {
-                    //PrintError($"Port {port} is open");
-                    openPorts++; // Increment open port count
+                    openPorts++;
                     lock (openPortList)
                     {
-                        openPortList.Add(port); // Add the open port to the list
+                        openPortList.Add(port);
                     }
-                }
-                else
-                {
-                    //WriteLine($"Port {port} is closed");
                 }
             }
             catch (Exception ex)
@@ -83,14 +73,6 @@ namespace NScan.Core
             }
 
             return openPortList;
-        }
-
-        // Helper method for printing open port messages
-        private static void PrintError(string msg)
-        {
-            ForegroundColor = ConsoleColor.Red;
-            WriteLine(msg);
-            ResetColor();
         }
     }
 }

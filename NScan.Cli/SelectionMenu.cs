@@ -57,7 +57,7 @@ public class SelectionMenu(string banner, string[] options)
     }
 
     // Little gimmick: Get a random color for the banner
-    private static ConsoleColor GetRandomConsoleColor => (ConsoleColor)new Random().Next(1, 7);
+    private static ConsoleColor GetRandomConsoleColor => (ConsoleColor)new Random().Next(1, 8);
 
     static string ConsoleColorToAnsi(ConsoleColor color)
     {

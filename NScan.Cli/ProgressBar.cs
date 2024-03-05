@@ -1,13 +1,13 @@
 using System.Text;
 
-namespace NScan.Cli.Rendering;
+namespace NScan.Cli;
 
 /// <summary>
 /// An ASCII progress bar
 /// </summary>
 public class ProgressBar : IDisposable, IProgress<double>
 {
-    private int blockCount;
+    private readonly int blockCount;
     private readonly TimeSpan animationInterval = TimeSpan.FromSeconds(1.0 / 8);
     private const string animation = @"|/-\";
 
@@ -25,9 +25,9 @@ public class ProgressBar : IDisposable, IProgress<double>
         // A progress bar is only for temporary display in a console window.
         // If the console output is redirected to a file, draw nothing.
         // Otherwise, we'll end up with a lot of garbage in the target file.
-        if (!Console.IsOutputRedirected)
+        if (!IsOutputRedirected)
         {
-            blockCount = Console.WindowWidth - 10;
+            blockCount = WindowWidth - 10;
             ResetTimer();
         }
     }
@@ -82,7 +82,7 @@ public class ProgressBar : IDisposable, IProgress<double>
             outputBuilder.Append('\b', overlapCount);
         }
 
-        Console.Write(outputBuilder);
+        Write(outputBuilder);
         currentText = text;
     }
 

@@ -2,26 +2,15 @@
 
 namespace NScan.Core
 {
-    public class ScanService
+    public class ScanService(IPAddress ipAddress, int startPort, int endPort, int timeoutMilliseconds)
     {
-        private IPAddress _ipAddress;
-        private int _startPort;
-        private int _endPort;
-        private int _timeoutMilliseconds;
-        private int _openPorts;
-        private List<int> _openPortList;
-        private PortScanner portScanner;
-
-        public ScanService(IPAddress ipAddress, int startPort, int endPort, int timeoutMilliseconds)
-        {
-            _ipAddress = ipAddress;
-            _startPort = startPort;
-            _endPort = endPort;
-            _timeoutMilliseconds = timeoutMilliseconds;
-            _openPorts = 0;
-            _openPortList = [];
-            portScanner = new PortScanner();
-        }
+        private readonly IPAddress _ipAddress = ipAddress;
+        private readonly int _startPort = startPort;
+        private readonly int _endPort = endPort;
+        private readonly int _timeoutMilliseconds = timeoutMilliseconds;
+        private int _openPorts = 0;
+        private List<int> _openPortList = [];
+        private readonly PortScanner portScanner = new();
 
         public int GetPortsScanned()
         {

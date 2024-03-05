@@ -1,6 +1,5 @@
 ﻿using NScan.Cli;
 using NScan.Core;
-using System.Net;
 using System.Text.RegularExpressions;
 
 // Program
@@ -28,7 +27,7 @@ string[] options = [
     "Custom scan (not yet implemented)",
     "Exit"
     ];
-SelectionMenu2 menu = new(banner, options);
+SelectionMenu menu = new(banner, options);
 int selectedIndex = menu.ShowMenu();
 
 // Options
