@@ -12,11 +12,18 @@ public class CliScanner(string target, int startPort, int endPort, int timeoutMi
 
     public async Task<List<int>> PerformScan(ScanMethod scanMethod)
     {
-        var host = Dns.GetHostEntry(_target);
-        IPAddress ipAddress = host.AddressList[0];
+        // If the target is an IP address, this will return the IP address;
+        // otherwise, it will perform a DNS lookup
 
-        ScanService scanService = new ScanService(ipAddress, _startPort, _endPort, _timeoutMilliseconds);
-        ProgressService progressService = new ProgressService(scanService, _startPort, _endPort);
+        #pragma warning disable CS8600 // address is checked by implementation
+        if (!IPAddress.TryParse(_target, out IPAddress ipAddress))
+        {
+            var host = await Dns.GetHostEntryAsync(_target);
+            ipAddress = host.AddressList[0];
+        }
+
+        ScanService scanService = new(ipAddress, _startPort, _endPort, _timeoutMilliseconds);
+        ProgressService progressService = new(scanService, _startPort, _endPort);
 
         // Scanning and progress rendering are independent tasks
         Task progressTask = RenderProgress(progressService);
@@ -26,14 +33,12 @@ public class CliScanner(string target, int startPort, int endPort, int timeoutMi
         return await scanTask;
     }
 
-    public async Task RenderProgress(ProgressService progressService)
+    public static async Task RenderProgress(ProgressService progressService)
     {
         using var progressBar = new ProgressBar();
         while (true)
         {
             float progress = progressService.GetProgress();
-
-            // Render the progress bar
             progressBar.Report(progress);
 
             // Check if scanning is complete

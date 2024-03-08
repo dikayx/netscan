@@ -18,20 +18,17 @@ string banner = @"
  " + note + @"
 ------------------------------------------------------------";
 
-// WriteLine(banner);
-// WriteLine("Please select a scan method:");
-
 string[] options = [
     "Multi-threaded scan (fast, recommended)",
     "Single-threaded scan (slow, needs less resources)",
-    "Custom scan (not yet implemented)",
+    "Custom scan (enter target, start and end ports, and timeout)",
     "Exit"
     ];
 SelectionMenu menu = new(banner, options);
 int selectedIndex = menu.ShowMenu();
 
 // Options
-string target = "www.google.com";
+string target = "localhost";
 int startPort = 1;
 int endPort = 1024;
 int timeoutMilliseconds = 100;
@@ -47,8 +44,8 @@ switch (selectedIndex)
         break;
     case 2:
         target = GetTargetFromUser();
-        startPort = GetPortFromUser();
-        endPort = GetPortFromUser();
+        startPort = GetPortFromUser("start");
+        endPort = GetPortFromUser("end");
         timeoutMilliseconds = GetTimeoutFromUser();
         break;
     case 3:
@@ -79,50 +76,53 @@ WriteLine($"Scan completed in {timeTaken.Minutes}:{timeTaken.Seconds} minutes");
 WriteLine($"Found {openPorts} open ports");
 if (openPorts > 0)
 {
-    WriteLine("Open ports:");
     PrintOpenPorts(openPortList);
 }
-
-// TODO: If the user enters nothing, use a default value
 
 // Helper methods
 static string GetTargetFromUser()
 {
-    Write("Enter the target IP address or domain name: ");
-    // Target can be a number or domain name
-    // domain must start with http:// or https:// or www.
-    string regex = @"^(http|https|www)\:\/\/";
+    Write("Enter the target IP address or domain name (default: 127.0.0.1): ");
+    // Target can be an IP address or a domain name
+    string regex = @"^(?:https?:\/\/|www\.)|(?:\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})";
 
-    // TODO: Regex checks are not working
-    string target = ReadLine()!;
-    if (Regex.IsMatch(target, regex))
+    string? inputTarget = ReadLine()?.Trim();
+    string target = string.IsNullOrWhiteSpace(inputTarget) ? "127.0.0.1" : inputTarget;
+
+    if (!Regex.IsMatch(target, regex))
     {
-        WriteLine("Invalid target");
-        GetTargetFromUser();
+        ForegroundColor = ConsoleColor.Red;
+        WriteLine("Invalid input. Target must start with http://, https://, www., or be an IP address");
+        ResetColor();
+        target = GetTargetFromUser();
     }
 
     return target;
 }
 
-static int GetPortFromUser()
+static int GetPortFromUser(string startOrEnd)
 {
-    // Must be a number between 1 and 65535
-    Write("Enter the port number: ");
-    string input = ReadLine()!;
+    // When startOrEnd is "start", the default port is 1; when it's "end", the default port is 65535
+    Write($"Enter the {startOrEnd} port number (default: {(startOrEnd == "start" ? 1 : 65535)}): ");
+    string? inputPort = ReadLine()?.Trim();
+    string input = string.IsNullOrWhiteSpace(inputPort) ? (startOrEnd == "start" ? "1" : "65535") : inputPort;
+
     if (!int.TryParse(input, out int port) || port < 1 || port > 65535)
     {
         WriteLine("Invalid port number");
-        GetPortFromUser();
+        GetPortFromUser(startOrEnd);
     }
     return port;
 }
 
 static int GetTimeoutFromUser()
 {
-    // Must be a number between 1 and 10000
-    Write("Enter the timeout in milliseconds: ");
-    string input = ReadLine()!;
-    if (!int.TryParse(input, out int timeout) || timeout < 1 || timeout > 10000)
+    // Must be a number between 1 and 1000
+    Write("Enter the timeout in milliseconds (default: 100): ");
+    string? inputTimeout = ReadLine()?.Trim();
+    string input = string.IsNullOrWhiteSpace(inputTimeout) ? "100" : inputTimeout;
+
+    if (!int.TryParse(input, out int timeout) || timeout < 1 || timeout > 1000)
     {
         WriteLine("Invalid timeout");
         GetTimeoutFromUser();
