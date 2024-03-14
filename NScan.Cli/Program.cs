@@ -27,8 +27,11 @@ string[] options = [
 SelectionMenu menu = new(banner, options);
 int selectedIndex = menu.ShowMenu();
 
+// Host system
+string systemName = Environment.OSVersion.Platform == PlatformID.Unix ? "Unix" : "Windows";
+
 // Options
-string target = "localhost";
+string target = systemName == "Unix" ? "www.google.com" : "localhost";
 int startPort = 1;
 int endPort = 1024;
 int timeoutMilliseconds = 100;
