@@ -79,6 +79,10 @@ if (openPorts > 0)
     PrintOpenPorts(openPortList);
 }
 
+// Wait for user input before exiting
+WriteLine("Press any key to exit...");
+ReadKey();
+
 // Helper methods
 static string GetTargetFromUser()
 {
