@@ -18,7 +18,7 @@ public class SelectionMenu(string banner, string[] options)
         WriteLine("\nUse ↑ and ↓ to navigate and press Enter/Return to select a scan method\n");
         (int left, int top) = GetCursorPosition();
         var option = 0;
-        var decorator = "\u001b[32m\u001b[1m>> "; // green
+        var decorator = ConsoleSupportsAnsi() ? "\u001b[32m\u001b[1m>> " : ">> "; // green or default
         ConsoleKeyInfo key;
         bool isSelected = false;
 
@@ -28,7 +28,11 @@ public class SelectionMenu(string banner, string[] options)
 
             for (int i = 0; i < _options.Length; i++)
             {
-                WriteLine($"{(option == i ? decorator : "   ")}{_options[i]}\u001b[0m");
+                // If the console supports ANSI escape codes, we can use them to highlight the selected option
+                // Otherwise, we'll just use the default console colors
+                string output = $"{(option == i ? decorator : "   ")}{_options[i]}";
+                if (ConsoleSupportsAnsi()) output += "\u001b[0m";
+                WriteLine(output);
             }
 
             key = ReadKey(false);
@@ -52,5 +56,11 @@ public class SelectionMenu(string banner, string[] options)
 
         CursorVisible = true;
         return option;
+    }
+
+    // ANSI escape codes are only supported on Unix and macOS
+    private static bool ConsoleSupportsAnsi()
+    {
+        return Environment.OSVersion.Platform == PlatformID.Unix || Environment.OSVersion.Platform == PlatformID.MacOSX;
     }
 }
