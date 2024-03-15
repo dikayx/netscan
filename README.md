@@ -6,7 +6,15 @@ NetScan is a port scanner that can be used to scan a range of IP addresses and p
 
 ## Installation
 
+### Get started
+
 To get started, download the latest release from the [releases page](https://github.com/dan-koller/netscan/releases). NetScan is a single executable file, so you can run it directly from the command line or by double-clicking it in the file explorer (on Windows).
+
+On Linux and macOS, you may need to make the file executable before you can run it. You can do this by running the following command in the terminal:
+
+```bash
+chmod +x NScan.Cli
+```
 
 ### Building from Source
 
