@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 
 // Program
 string developer = "Dan Koller";
-string version = "1.0.0";
+string version = "1.0.1";
 string note = $"Version {version} by {developer}";
 string banner = @"
 ------------------------------------------------------------
@@ -27,11 +27,12 @@ string[] options = [
 SelectionMenu menu = new(banner, options);
 int selectedIndex = menu.ShowMenu();
 
-// Host system
+// Platform-specific defaults
 string systemName = Environment.OSVersion.Platform == PlatformID.Unix ? "Unix" : "Windows";
+string defaultTarget = systemName == "Unix" ? "8.8.8.8" : "127.0.0.1";
 
 // Options
-string target = systemName == "Unix" ? "www.google.com" : "localhost";
+string target = defaultTarget;
 int startPort = 1;
 int endPort = 1024;
 int timeoutMilliseconds = 100;
@@ -62,15 +63,14 @@ switch (selectedIndex)
 // Record start time
 DateTime startTime = DateTime.Now;
 
+// Perform scan
 WriteLine($"Scanning ports {startPort} to {endPort} on {target}...");
-
-// Create a new ScanService
 CliScanner scanner = new(target, startPort, endPort, timeoutMilliseconds);
 Task<List<int>> openPortsTask = scanner.PerformScan(scanMethod);
 List<int> openPortList = openPortsTask.Result;
 int openPorts = openPortList.Count;
 
-// Record end time
+// Process elapsed time
 DateTime endTime = DateTime.Now;
 TimeSpan timeTaken = endTime - startTime;
 
@@ -87,9 +87,9 @@ WriteLine("Press any key to exit...");
 ReadKey();
 
 // Helper methods
-static string GetTargetFromUser()
+string GetTargetFromUser()
 {
-    Write("Enter the target IP address or domain name (default: 127.0.0.1): ");
+    Write($"Enter the target IP address or domain name (default: {defaultTarget}): ");
     // Target can be an IP address or a domain name
     string regex = @"^(?:https?:\/\/|www\.)|(?:\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})";
 
