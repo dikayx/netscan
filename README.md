@@ -8,12 +8,24 @@ NetScan is a port scanner that can be used to scan a range of IP addresses and p
 
 ### Get started
 
-To get started, download the latest release from the [releases page](https://github.com/dan-koller/netscan/releases). NetScan is a single executable file, so you can run it directly from the command line or by double-clicking it in the file explorer (on Windows).
+To get started, download the latest release from the [releases page](https://github.com/dan-koller/netscan/releases). NetScan is a single executable file, so you can run it directly from the command line or by double-clicking it.
+
+#### Windows
+
+```powershell
+.\NetScan.exe
+```
+
+#### Linux & macOS
+
+```bash
+./NetScan
+```
 
 On Linux and macOS, you may need to make the file executable before you can run it. You can do this by running the following command in the terminal:
 
 ```bash
-chmod +x NScan.Cli
+chmod +x NetScan
 ```
 
 ### Building from Source
@@ -35,7 +47,9 @@ I hope it is self-explanatory, but here is a quick rundown of the features and h
 
 You can choose between 3 different scan modes:
 
--   Multit-hreaded: This mode uses a separate thread for each IP address and port combination. It is the fastest mode but can be resource-intensive. By default, it will scan `localhost` on Windows and `www.google.com` on Linux & macOS on ports `1-1024`.
+-   Multi-threaded: This mode uses a separate thread for each IP address and port combination. It is the fastest mode but can be resource-intensive. By default, it will scan `localhost` on Windows and `8.8.8.8` on Linux & macOS on ports `1-1024`.
+
+    > Note: Due to differences in the way Windows and Linux handle network interfaces, we must use Google's public DNS server on Linux & macOS to scan the local machine. This is because the loopback interface is not accessible from the outside on these systems.
 
 -   Single-threaded: Same as the multithreaded mode, but only uses a single thread. It is slower but uses fewer resources.
 
