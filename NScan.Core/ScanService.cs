@@ -19,8 +19,6 @@ namespace NScan.Core
 
         public async Task<List<int>> ScanPorts(ScanMethod scanMethod)
         {
-            //PortScanner portScanner = new PortScanner();
-
             switch (scanMethod)
             {
                 case ScanMethod.SingleThreaded:
@@ -71,7 +69,6 @@ namespace NScan.Core
             }
         }
 
-        // Helper methods for determining thread count
         private static int GetThreadCount()
         {
             // Multiplier can be adjusted in the future for performance tuning
@@ -91,8 +88,6 @@ namespace NScan.Core
             {
                 threadCount = 64;
             }
-
-            //WriteLine($"Using {threadCount} threads");
 
             return threadCount;
         }

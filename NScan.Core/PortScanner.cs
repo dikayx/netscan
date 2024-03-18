@@ -39,7 +39,7 @@ namespace NScan.Core
                 }
                 catch (Exception ex)
                 {
-                    WriteLine($"Error scanning port {port}: {ex.Message}");
+                    FileLogger.Log($"Error scanning {ipAddress}:{port}: {ex.Message}");
                 }
             }
 
@@ -69,7 +69,7 @@ namespace NScan.Core
             }
             catch (Exception ex)
             {
-                WriteLine($"Error scanning port {port}: {ex.Message}");
+                FileLogger.Log($"Error scanning {ipAddress}:{port}: {ex.Message}");
             }
 
             return openPortList;
