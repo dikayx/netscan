@@ -30,7 +30,7 @@ namespace NScan.Core
                 default:
                     throw new ArgumentException("Invalid scan method");
             }
-            
+
             return _openPortList;
         }
 
@@ -48,12 +48,14 @@ namespace NScan.Core
             List<Task> tasks = [];
 
             int portRange = _endPort - _startPort + 1;
-            int batchSize = Math.Max(1, portRange / threadCount); // Determine batch size
+            int batchSize = portRange / threadCount;
+            int remainingPorts = portRange % threadCount;
 
             for (int i = 0; i < threadCount; i++)
             {
-                int batchStartPort = _startPort + i * batchSize;
-                int batchEndPort = Math.Min(_endPort, batchStartPort + batchSize - 1);
+                int extraPorts = (i < remainingPorts) ? 1 : 0; // Distribute remaining ports
+                int batchStartPort = _startPort + i * (batchSize + extraPorts);
+                int batchEndPort = Math.Min(_endPort, batchStartPort + batchSize + extraPorts - 1);
 
                 tasks.Add(ScanPortRangeAsync(portScanner, batchStartPort, batchEndPort));
             }
