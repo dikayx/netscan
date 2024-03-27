@@ -1,5 +1,8 @@
 # NetScan
 
+[![.NET 8](https://img.shields.io/badge/.NET-8.0-purple.svg)](https://dotnet.microsoft.com/download/dotnet/8.0)
+[![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+
 NetScan is a port scanner that can be used to scan a range of IP addresses and ports. It is lightweight, cross-platform, and easy to use. NetScan supports multithreading and asynchronous operations which makes it fast and efficient. It has no dependencies and can be run on any system that supports .NET Core.
 
 ![NetScan](NetScan.gif)

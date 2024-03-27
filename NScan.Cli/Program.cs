@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 
 // Program
 string developer = "Dan Koller";
-string version = "1.0.1";
+string version = "1.0.2";
 string note = $"Version {version} by {developer}";
 string banner = @"
 ------------------------------------------------------------
