@@ -94,7 +94,7 @@ string GetTargetFromUser()
     string regex = @"^(?:https?:\/\/|www\.)|(?:\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})";
 
     string? inputTarget = ReadLine()?.Trim();
-    string target = string.IsNullOrWhiteSpace(inputTarget) ? "127.0.0.1" : inputTarget;
+    string target = string.IsNullOrWhiteSpace(inputTarget) ? defaultTarget : inputTarget;
 
     if (!Regex.IsMatch(target, regex))
     {
