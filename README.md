@@ -11,7 +11,7 @@ NetScan is a port scanner that can be used to scan a range of IP addresses and p
 
 ### Get started
 
-To get started, download the latest release from the [releases page](https://github.com/dan-koller/netscan/releases). NetScan is a single executable file, so you can run it directly from the command line or by double-clicking it.
+To get started, download the latest release from the [releases page](https://github.com/dikayx/netscan/releases). NetScan is a single executable file, so you can run it directly from the command line or by double-clicking it.
 
 #### Windows
 
@@ -36,7 +36,7 @@ chmod +x NetScan
 If you want to build NetScan from source, you can clone the repository and build it using the .NET Core SDK. NetScan is written in C# and uses the .NET 8.0 runtime.
 
 ```bash
-git clone https://github.com/dan-koller/netscan.git
+git clone https://github.com/dikayx/netscan.git
 cd netscan
 dotnet build
 dotnet run --project NScan.Cli/NScan.Cli.csproj
